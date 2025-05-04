@@ -72,7 +72,5 @@ Esse comando iniciará tanto a aplicação quanto o banco.
 
 ## Observações
 
-## Observações
-
 - O banco de dados e a tabela `pedido` serão criados automaticamente ao iniciar o container, caso ainda não existam.
 - O projeto utiliza `mysql2` para interagir diretamente com o banco de dados, sem o uso de ORMs como Prisma.
