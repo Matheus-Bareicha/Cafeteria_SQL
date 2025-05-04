@@ -1,0 +1,16 @@
+node_modules
+
+*.log
+
+dist
+build
+.cache
+
+.DS_Store
+Thumbs.db
+
+.git
+.gitignore
+
+.vscode
+*.swp

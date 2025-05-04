@@ -1,0 +1,43 @@
+services:
+  app:
+    build:
+      context: .
+    container_name: container-sql
+    ports:
+      - "${PORT_APP}:${PORT_APP}"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - app-network
+    command: ["sh", "-c", "/usr/local/bin/wait-for-it.sh container-banco-sql:${PORT_DB} && npx tsx watch src/server.ts"]
+
+  mysql:
+    container_name: container-banco-sql
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE}
+    ports:
+      - "${PORT_DB}:${PORT_DB}"
+    networks:
+      - app-network
+    restart: unless-stopped
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 60s
+      timeout: 10s
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
